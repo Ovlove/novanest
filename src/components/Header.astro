@@ -1,4 +1,5 @@
 ---
+// Same imports as before
 import HeaderLink from "./HeaderLink.astro";
 import { siteConfig, NAV_LINKS } from "../consts";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -19,25 +20,25 @@ function buildNavLink(nav: string, entry: NavEntry): string {
 }
 ---
 
-<header class="group relative mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-4 sm:px-8 py-5 bg-white dark:bg-gray-900 shadow-md rounded-2xl border border-gray-200 dark:border-gray-700 transition-all duration-200">
-  <!-- Logo and Site Title -->
-  <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-    <a href={`/${lang}/`} class="flex items-center gap-3 text-indigo-700 dark:text-white font-bold text-2xl">
-      <img src="/novanest-logo.png" alt="NovaNest Logo" class="w-9 h-9 rounded-full shadow-sm" />
-      <span class="tracking-wide font-bold text-2xl">NovaNest</span>
-    </a>
-    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 sm:mt-0 sm:ml-4 font-medium">Where Ideas Take Flight</p>
-  </div>
+<header id="main-header" class="relative z-50 mb-8 px-4 sm:px-8 py-5 bg-white dark:bg-gray-900 shadow-md rounded-2xl border border-gray-200 dark:border-gray-700 transition-all duration-200">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <!-- Logo -->
+    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+      <a href={`/${lang}/`} class="flex items-center gap-3 text-indigo-700 dark:text-white font-bold text-2xl">
+        <img src="/novanest-logo.png" alt="NovaNest Logo" class="w-9 h-9 rounded-full shadow-sm" />
+        <span class="tracking-wide">NovaNest</span>
+      </a>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 sm:mt-0 sm:ml-4 font-medium">Tools. Tech. Digital Income. Growth.</p>
+    </div>
 
-  <!-- Navigation Menu -->
-  <nav class="w-full sm:w-auto mt-4 sm:mt-0 sm:flex sm:items-center" id="navigation-menu" aria-label="main menu">
-    <div class="flex flex-col sm:flex-row gap-3">
+    <!-- Desktop Nav -->
+    <nav class="hidden sm:flex gap-4 items-center">
       {
         NAV_LINKS.map((nav) => {
           const translation = t(nav);
           return (
             <HeaderLink
-              class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-white transition-colors"
+              class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-white transition-colors"
               href={buildNavLink(nav, translation)}
               title={translation.text}
               aria-current={url.pathname === translation.slug ? "page" : false}
@@ -48,38 +49,58 @@ function buildNavLink(nav: string, entry: NavEntry): string {
           );
         })
       }
+    </nav>
+
+    <!-- Controls -->
+    <div class="flex items-center gap-3">
+      <SelectLanguage />
+      <ThemeToggle />
+
+      <!-- Mobile Menu Button -->
+      <nav-button>
+        <div class="sm:hidden">
+          <span class="sr-only">open main menu</span>
+          <button
+            class="group flex items-center justify-center"
+            type="button"
+            id="navigation-menu-btn"
+            aria-label="Open main menu"
+            aria-expanded="false"
+            aria-haspopup="menu"
+          >
+            <!-- icon when menu is closed -->
+            <svg class="h-6 w-6 block group-aria-expanded:hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+
+            <!-- icon when menu is open -->
+            <svg class="h-6 w-6 hidden group-aria-expanded:block" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </nav-button>
     </div>
-  </nav>
+  </div>
 
-  <!-- Controls -->
-  <div class="flex items-center gap-3 mt-4 sm:mt-0">
-    <SelectLanguage />
-    <ThemeToggle />
-
-    <!-- Mobile Menu Button -->
-    <nav-button>
-      <div class="sm:hidden">
-        <span class="sr-only">open main menu</span>
-        <button
-          class="group flex items-center justify-center"
-          type="button"
-          id="navigation-menu-btn"
-          aria-label="Open main menu"
-          aria-expanded="false"
-          aria-haspopup="menu"
-        >
-          <!-- icon when menu is closed -->
-          <svg class="h-6 w-6 block group-aria-expanded:hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
-
-          <!-- icon when menu is open -->
-          <svg class="h-6 w-6 hidden group-aria-expanded:block" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    </nav-button>
+  <!-- Mobile Menu Overlay and Panel -->
+  <div id="mobile-menu-overlay" class="fixed inset-0 z-40 bg-black bg-opacity-50 backdrop-blur-sm hidden transition-opacity duration-300"></div>
+  <div id="mobile-menu-panel" class="fixed top-0 right-0 z-50 h-full w-3/4 max-w-xs bg-white dark:bg-gray-800 shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out sm:hidden p-6 flex flex-col gap-4">
+    {
+      NAV_LINKS.map((nav) => {
+        const translation = t(nav);
+        return (
+          <HeaderLink
+            class="text-base font-medium text-gray-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400"
+            href={buildNavLink(nav, translation)}
+            title={translation.text}
+            aria-current={url.pathname === translation.slug ? "page" : false}
+          >
+            {translation.text}
+          </HeaderLink>
+        );
+      })
+    }
   </div>
 </header>
 
@@ -87,27 +108,39 @@ function buildNavLink(nav: string, entry: NavEntry): string {
   header {
     font-family: 'Inter', sans-serif;
   }
+
+  body.mobile-menu-open {
+    overflow: hidden;
+  }
 </style>
 
 <script>
   class MobileNavBtn extends HTMLElement {
-    private headerEl: HTMLElement;
-    private mobileButtonEl: HTMLButtonElement;
-    private menuOpen: boolean;
-
     constructor() {
       super();
-      this.headerEl = document.getElementById("main-header")!;
-      this.mobileButtonEl = this.querySelector("button") as HTMLButtonElement;
       this.menuOpen = false;
+      this.mobileButtonEl = this.querySelector("button");
+      this.menuPanel = document.getElementById("mobile-menu-panel");
+      this.overlay = document.getElementById("mobile-menu-overlay");
 
       this.mobileButtonEl.addEventListener("click", this.toggleMobileMenu);
+      this.overlay.addEventListener("click", this.closeMobileMenu);
     }
 
     toggleMobileMenu = () => {
-      this.headerEl.classList.toggle("menu-open");
       this.menuOpen = !this.menuOpen;
+      document.body.classList.toggle("mobile-menu-open", this.menuOpen);
       this.mobileButtonEl.setAttribute("aria-expanded", this.menuOpen.toString());
+      this.menuPanel.classList.toggle("translate-x-full", !this.menuOpen);
+      this.overlay.classList.toggle("hidden", !this.menuOpen);
+    };
+
+    closeMobileMenu = () => {
+      this.menuOpen = false;
+      document.body.classList.remove("mobile-menu-open");
+      this.mobileButtonEl.setAttribute("aria-expanded", "false");
+      this.menuPanel.classList.add("translate-x-full");
+      this.overlay.classList.add("hidden");
     };
   }
 
