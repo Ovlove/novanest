@@ -23,11 +23,6 @@ const tech: Array<{ title: string; desc: string; href: string }> = [
 		href: "https://astro.build",
 	},
 	{
-		title: "Astro Assets",
-		desc: "Built-in optimized asset support.",
-		href: "https://docs.astro.build/en/guides/assets/",
-	},
-	{
 		title: "Tailwind CSS",
 		desc: "Rapidly build modern websites without ever leaving your HTML.",
 		href: "https://tailwindcss.com",
@@ -50,23 +45,21 @@ const tech: Array<{ title: string; desc: string; href: string }> = [
 ];
 ---
 
-<BaseLayout title="Home">
-	<section>
-		<h1 class="title">Hello World</h1>
-		<p class="mb-4 sm:mb-8">
-			Hey guys! This a theme for Astro. You can use this to as personal
-			blog or portfolio. If you want to know more about how you can
-			customise and make it your own, click on the github icon link below,
-			and it will take you to the repo.
-		</p>
-		<div>
-			<span>You can find me on: </span>
-			<SocialMediaLinks />
+<BaseLayout title="NovaNest – Tech, Tools & Digital Income">
+	<!-- 🚀 NovaNest Hero Section -->
+	<section class="py-20 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-center text-white rounded-2xl mx-4 mt-6 shadow-xl">
+		<div class="max-w-3xl mx-auto px-6">
+			<h1 class="text-5xl font-extrabold">Welcome to NovaNest</h1>
+			<p class="mt-4 text-xl font-light">Tech, Tools, and Digital Income — Your guide to online growth and smart living.</p>
+			<a href="/en/blog" class="inline-block mt-8 px-6 py-3 bg-white text-indigo-700 font-semibold rounded-xl shadow transition hover:bg-indigo-100">
+				Explore the Blog
+			</a>
 		</div>
 	</section>
 
-	<section class="mt-8 sm:mt-16">
-		<h2 class="title">Posts</h2>
+	<!-- 📝 Blog Posts -->
+	<section class="mt-16 sm:mt-20">
+		<h2 class="title">Latest Posts</h2>
 		<ul class="space-y-4 sm:space-y-2">
 			{
 				filteredPostsByLanguage.map((p) => (
@@ -76,8 +69,9 @@ const tech: Array<{ title: string; desc: string; href: string }> = [
 		</ul>
 	</section>
 
+	<!-- 🛠️ Technologies Used -->
 	<section class="mt-16">
-		<h2 class="title">Technologies</h2>
+		<h2 class="title">Powered by</h2>
 		<ul class="space-y-4 sm:space-y-2">
 			{
 				tech.map(({ href, title, desc }) => (
@@ -95,5 +89,12 @@ const tech: Array<{ title: string; desc: string; href: string }> = [
 				))
 			}
 		</ul>
+	</section>
+
+	<!-- 📱 Social Media -->
+	<section class="mt-12">
+		<h2 class="title">Connect with NovaNest</h2>
+		<p>You can find us on:</p>
+		<SocialMediaLinks />
 	</section>
 </BaseLayout>
