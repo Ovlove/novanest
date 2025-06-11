@@ -12,106 +12,104 @@ const lang = getLangFromUrl(Astro.url);
 const t = useNavTranslations(lang);
 
 function buildNavLink(nav: string, entry: NavEntry): string {
-	if (entry.route) {
-		return `/${lang}${entry.route}`;
-	}
-	return `/${lang}${nav != "home" ? `/${entry.slug}/` : "/"}`;
+  if (entry.route) {
+    return `/${lang}${entry.route}`;
+  }
+  return `/${lang}${nav != "home" ? `/${entry.slug}/` : "/"}`;
 }
 ---
 
-<header class="group relative mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-4 sm:px-8 py-4 bg-white dark:bg-gray-900 shadow-md rounded-xl">
-	<!-- Logo and Site Title -->
-	<div class="flex flex-col sm:flex-row sm:items-center gap-2">
-		<a href={`/${lang}/`} class="flex items-center gap-2 text-indigo-700 dark:text-white font-bold text-xl">
-			<img src="/logo.svg" alt="NovaNest Logo" class="w-8 h-8" />
-			<span class="tracking-wide">NovaNest</span>
-		</a>
-		<p class="text-sm text-gray-600 dark:text-gray-400 mt-1 sm:mt-0 sm:ml-3">Tech. Tools. Digital Income.</p>
-	</div>
+<header class="group relative mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-4 sm:px-8 py-5 bg-white dark:bg-gray-900 shadow-md rounded-2xl border border-gray-200 dark:border-gray-700 transition-all duration-200">
+  <!-- Logo and Site Title -->
+  <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+    <a href={`/${lang}/`} class="flex items-center gap-3 text-indigo-700 dark:text-white font-bold text-2xl">
+      <img src="/logo.svg" alt="NovaNest Logo" class="w-9 h-9 rounded-full shadow-sm" />
+      <span class="tracking-wide">NovaNest</span>
+    </a>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 sm:mt-0 sm:ml-4 font-medium">Tools. Tech. Digital Income. Growth.</p>
+  </div>
 
-	<!-- Navigation Menu -->
-	<nav class="w-full sm:w-auto mt-4 sm:mt-0 sm:flex sm:items-center" id="navigation-menu" aria-label="main menu">
-		<div class="flex flex-col sm:flex-row gap-2">
-			{
-				NAV_LINKS.map((nav) => {
-					const translation = t(nav);
-					return (
-						<HeaderLink
-							class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-white"
-							href={buildNavLink(nav, translation)}
-							title={translation.text}
-							aria-current={url.pathname === translation.slug ? "page" : false}
-							data-astro-prefetch
-						>
-							{translation.text}
-						</HeaderLink>
-					);
-				})
-			}
-		</div>
-	</nav>
+  <!-- Navigation Menu -->
+  <nav class="w-full sm:w-auto mt-4 sm:mt-0 sm:flex sm:items-center" id="navigation-menu" aria-label="main menu">
+    <div class="flex flex-col sm:flex-row gap-3">
+      {
+        NAV_LINKS.map((nav) => {
+          const translation = t(nav);
+          return (
+            <HeaderLink
+              class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-white transition-colors"
+              href={buildNavLink(nav, translation)}
+              title={translation.text}
+              aria-current={url.pathname === translation.slug ? "page" : false}
+              data-astro-prefetch
+            >
+              {translation.text}
+            </HeaderLink>
+          );
+        })
+      }
+    </div>
+  </nav>
 
-	<!-- Controls -->
-	<div class="flex items-center gap-3 mt-4 sm:mt-0">
-		<SelectLanguage />
-		<ThemeToggle />
+  <!-- Controls -->
+  <div class="flex items-center gap-3 mt-4 sm:mt-0">
+    <SelectLanguage />
+    <ThemeToggle />
 
-		<!-- Mobile Menu Button -->
-		<nav-button>
-			<div class="sm:hidden">
-				<span class="sr-only">open main menu</span>
-				<button
-					class="group flex items-center justify-center"
-					type="button"
-					id="navigation-menu-btn"
-					aria-label="Open main menu"
-					aria-expanded="false"
-					aria-haspopup="menu"
-				>
-					<!-- icon when menu is closed -->
-					<svg class="h-6 w-6 block group-aria-expanded:hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-					</svg>
+    <!-- Mobile Menu Button -->
+    <nav-button>
+      <div class="sm:hidden">
+        <span class="sr-only">open main menu</span>
+        <button
+          class="group flex items-center justify-center"
+          type="button"
+          id="navigation-menu-btn"
+          aria-label="Open main menu"
+          aria-expanded="false"
+          aria-haspopup="menu"
+        >
+          <!-- icon when menu is closed -->
+          <svg class="h-6 w-6 block group-aria-expanded:hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
 
-					<!-- icon when menu is open -->
-					<svg class="h-6 w-6 hidden group-aria-expanded:block" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-					</svg>
-				</button>
-			</div>
-		</nav-button>
-	</div>
+          <!-- icon when menu is open -->
+          <svg class="h-6 w-6 hidden group-aria-expanded:block" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </nav-button>
+  </div>
 </header>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
-	header {
-		font-family: 'Inter', sans-serif;
-	}
+  header {
+    font-family: 'Inter', sans-serif;
+  }
 </style>
 
 <script>
-	class MobileNavBtn extends HTMLElement {
-		private headerEl: HTMLElement;
-		private mobileButtonEl: HTMLButtonElement;
-		private menuOpen: boolean;
+  class MobileNavBtn extends HTMLElement {
+    private headerEl: HTMLElement;
+    private mobileButtonEl: HTMLButtonElement;
+    private menuOpen: boolean;
 
-		constructor() {
-			super();
-			this.headerEl = document.getElementById("main-header")!;
-			this.mobileButtonEl = this.querySelector("button") as HTMLButtonElement;
-			this.menuOpen = false;
+    constructor() {
+      super();
+      this.headerEl = document.getElementById("main-header")!;
+      this.mobileButtonEl = this.querySelector("button") as HTMLButtonElement;
+      this.menuOpen = false;
 
-			this.mobileButtonEl.addEventListener("click", this.toggleMobileMenu);
-		}
+      this.mobileButtonEl.addEventListener("click", this.toggleMobileMenu);
+    }
 
-		toggleMobileMenu = () => {
-			this.headerEl.classList.toggle("menu-open");
-			this.menuOpen = !this.menuOpen;
-			this.mobileButtonEl.setAttribute("aria-expanded", this.menuOpen.toString());
-		};
-	}
+    toggleMobileMenu = () => {
+      this.headerEl.classList.toggle("menu-open");
+      this.menuOpen = !this.menuOpen;
+      this.mobileButtonEl.setAttribute("aria-expanded", this.menuOpen.toString());
+    };
+  }
 
-	customElements.define("nav-button", MobileNavBtn);
+  customElements.define("nav-button", MobileNavBtn);
 </script>
