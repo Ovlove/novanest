@@ -7,32 +7,62 @@ import { getLangFromUrl } from "@/utils";
 import ui from "@/i18n/ui";
 
 interface Props {
-	title?: string;
-	description?: string;
-	image?: string;
+  title?: string;
+  description?: string;
+  image?: string;
 }
 
 const lang = getLangFromUrl(Astro.url);
 
 const {
-	title = siteConfig.title,
-	description = ui[lang]["site.description"].text,
-	image,
+  title = siteConfig.title,
+  description = ui[lang]["site.description"].text,
+  image,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={lang || Astro.currentLocale} class="dark">
-	<head>
-		<BaseHead title={title} description={description} image={image} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section class="cody-bg">
-				<slot />
-			</section>
-		</main>
-		<Footer />
-	</body>
+<html lang={lang || Astro.currentLocale} class="dark scroll-smooth">
+  <head>
+    <BaseHead title={title} description={description} image={image} />
+  </head>
+  <body class="min-h-screen font-sans bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-300 relative overflow-x-hidden">
+
+    <!-- Header: sticky and styled -->
+    <header id="main-header" class="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-md">
+      <Header />
+    </header>
+
+    <!-- Mobile menu backdrop -->
+    <div id="mobile-backdrop" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40 hidden"></div>
+
+    <!-- Main content -->
+    <main>
+      <section class="cody-bg px-4 sm:px-8 py-8 max-w-screen-lg mx-auto">
+        <slot />
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <Footer />
+
+    <!-- JS for mobile menu and backdrop -->
+    <script>
+      const headerEl = document.getElementById('main-header');
+      const mobileBtn = document.querySelector('#navigation-menu-btn');
+      const backdrop = document.getElementById('mobile-backdrop');
+
+      if (mobileBtn && backdrop) {
+        mobileBtn.addEventListener('click', () => {
+          const isOpen = headerEl.classList.toggle('menu-open');
+          backdrop.classList.toggle('hidden', !isOpen);
+        });
+
+        backdrop.addEventListener('click', () => {
+          headerEl.classList.remove('menu-open');
+          backdrop.classList.add('hidden');
+        });
+      }
+    </script>
+  </body>
 </html>
