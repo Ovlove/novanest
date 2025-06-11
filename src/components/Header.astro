@@ -23,10 +23,10 @@ function buildNavLink(nav: string, entry: NavEntry): string {
   <!-- Logo and Site Title -->
   <div class="flex flex-col sm:flex-row sm:items-center gap-2">
     <a href={`/${lang}/`} class="flex items-center gap-3 text-indigo-700 dark:text-white font-bold text-2xl">
-      <img src="/logo.svg" alt="NovaNest Logo" class="w-9 h-9 rounded-full shadow-sm" />
-      <span class="tracking-wide">NovaNest</span>
+      <img src="/novanest-logo.png" alt="NovaNest Logo" class="w-9 h-9 rounded-full shadow-sm" />
+      <span class="tracking-wide font-bold text-2xl">NovaNest</span>
     </a>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 sm:mt-0 sm:ml-4 font-medium">Tools. Tech. Digital Income. Growth.</p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 sm:mt-0 sm:ml-4 font-medium">Where Ideas Take Flight</p>
   </div>
 
   <!-- Navigation Menu -->
@@ -37,7 +37,7 @@ function buildNavLink(nav: string, entry: NavEntry): string {
           const translation = t(nav);
           return (
             <HeaderLink
-              class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-white transition-colors"
+              class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-white transition-colors"
               href={buildNavLink(nav, translation)}
               title={translation.text}
               aria-current={url.pathname === translation.slug ? "page" : false}
