@@ -1,62 +1,45 @@
 ---
-import BaseHead from "@/components/BaseHead";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { siteConfig } from "../consts.ts";
-import { getLangFromUrl } from "@/utils";
-import ui from "@/i18n/ui";
-
-interface Props {
-  title?: string;
-  description?: string;
-  image?: string;
-}
-
-const lang = getLangFromUrl(Astro.url);
-
-const {
-  title = siteConfig.title,
-  description = ui[lang]["site.description"].text,
-  image,
-} = Astro.props;
+import { siteConfig } from "../consts";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { Analytics } from "@vercel/analytics/astro";
 ---
 
-<!DOCTYPE html>
-<html lang={lang || Astro.currentLocale} class="dark">
+<html lang="en">
   <head>
-    <BaseHead title={title} description={description} image={image} />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovaNest</title>
+    <meta name="description" content="A modern blog for developers, creators, and curious minds." />
+    <meta property="og:title" content="NovaNest" />
+    <meta property="og:description" content="A modern blog for developers, creators, and curious minds." />
+    <meta property="og:image" content="/social-banner.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="NovaNest" />
+    <meta name="twitter:description" content="A modern blog for developers, creators, and curious minds." />
+    <meta name="twitter:image" content="/social-banner.png" />
   </head>
-  <body class="bg-background text-foreground font-sans antialiased">
+
+  <body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-white transition-colors duration-300">
     <Header />
     
-    <main>
-      <section class="cody-bg">
-        <slot />
-      </section>
+    <main class="min-h-screen">
+      <slot />
     </main>
 
     <Footer />
+    <Analytics />
 
-    <!-- 🧠 Responsive Mobile Menu Script (Safe DOM Access) -->
-    <script is:client>
-      const toggleMenu = () => {
-        const headerEl = document.querySelector("header");
-        if (headerEl) {
-          headerEl.classList.toggle("menu-open");
-        }
-      };
+    <!-- ✅ Fixed Script for Responsive Navigation -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const toggle = document.querySelector('[data-toggle]');
+        const nav = document.querySelector('[data-nav]');
 
-      const closeMenu = () => {
-        const headerEl = document.querySelector("header");
-        if (headerEl) {
-          headerEl.classList.remove("menu-open");
-        }
-      };
-
-      document.addEventListener("click", (e) => {
-        const target = e.target;
-        if (target instanceof HTMLElement && !target.closest("header")) {
-          closeMenu();
+        if (toggle && nav) {
+          toggle.addEventListener('click', () => {
+            nav.classList.toggle('hidden');
+          });
         }
       });
     </script>
