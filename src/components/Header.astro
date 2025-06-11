@@ -1,5 +1,4 @@
 ---
-// Same imports as before
 import HeaderLink from "./HeaderLink.astro";
 import { siteConfig, NAV_LINKS } from "../consts";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -41,7 +40,7 @@ function buildNavLink(nav: string, entry: NavEntry): string {
               class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-white transition-colors"
               href={buildNavLink(nav, translation)}
               title={translation.text}
-              aria-current={url.pathname === translation.slug ? "page" : false}
+              aria-current={url.pathname.startsWith(translation.route ?? `/${translation.slug}`) ? "page" : undefined}
               data-astro-prefetch
             >
               {translation.text}
@@ -94,7 +93,7 @@ function buildNavLink(nav: string, entry: NavEntry): string {
             class="text-base font-medium text-gray-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400"
             href={buildNavLink(nav, translation)}
             title={translation.text}
-            aria-current={url.pathname === translation.slug ? "page" : false}
+            aria-current={url.pathname.startsWith(translation.route ?? `/${translation.slug}`) ? "page" : undefined}
           >
             {translation.text}
           </HeaderLink>
@@ -123,25 +122,42 @@ function buildNavLink(nav: string, entry: NavEntry): string {
       this.menuPanel = document.getElementById("mobile-menu-panel");
       this.overlay = document.getElementById("mobile-menu-overlay");
 
-      this.mobileButtonEl.addEventListener("click", this.toggleMobileMenu);
-      this.overlay.addEventListener("click", this.closeMobileMenu);
+      this.toggleMobileMenu = this.toggleMobileMenu.bind(this);
+      this.closeMobileMenu = this.closeMobileMenu.bind(this);
+      this.handleEscape = this.handleEscape.bind(this);
     }
 
-    toggleMobileMenu = () => {
+    connectedCallback() {
+      this.mobileButtonEl.addEventListener("click", this.toggleMobileMenu);
+      this.overlay.addEventListener("click", this.closeMobileMenu);
+      document.addEventListener("keydown", this.handleEscape);
+    }
+
+    disconnectedCallback() {
+      document.removeEventListener("keydown", this.handleEscape);
+    }
+
+    toggleMobileMenu() {
       this.menuOpen = !this.menuOpen;
       document.body.classList.toggle("mobile-menu-open", this.menuOpen);
       this.mobileButtonEl.setAttribute("aria-expanded", this.menuOpen.toString());
       this.menuPanel.classList.toggle("translate-x-full", !this.menuOpen);
       this.overlay.classList.toggle("hidden", !this.menuOpen);
-    };
+    }
 
-    closeMobileMenu = () => {
+    closeMobileMenu() {
       this.menuOpen = false;
       document.body.classList.remove("mobile-menu-open");
       this.mobileButtonEl.setAttribute("aria-expanded", "false");
       this.menuPanel.classList.add("translate-x-full");
       this.overlay.classList.add("hidden");
-    };
+    }
+
+    handleEscape(e) {
+      if (e.key === "Escape" && this.menuOpen) {
+        this.closeMobileMenu();
+      }
+    }
   }
 
   customElements.define("nav-button", MobileNavBtn);
