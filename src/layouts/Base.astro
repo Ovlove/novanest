@@ -22,17 +22,58 @@ const {
 ---
 
 <!doctype html>
-<html lang={lang || Astro.currentLocale} class="dark">
+<html lang={lang || Astro.currentLocale} class="dark scroll-smooth">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO + Social Meta -->
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={image || "/og-default.png"} />
+    <meta property="og:url" content={Astro.url.href} />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image || "/og-default.png"} />
+
+    <!-- Optional: Favicon -->
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Injects your existing head component -->
     <BaseHead title={title} description={description} image={image} />
   </head>
-  <body>
+  <body class="relative">
+
     <Header />
+
     <main>
       <section class="cody-bg">
         <slot />
       </section>
     </main>
+
     <Footer />
+
+    <!-- Back to Top Button -->
+    <button 
+      id="backToTop" 
+      class="fixed bottom-5 right-5 z-50 p-2 rounded-full bg-gray-800 text-white shadow-lg hover:bg-gray-700 transition hidden"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+      aria-label="Back to top"
+    >
+      ↑
+    </button>
+
+    <script>
+      const btn = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+      });
+    </script>
+
   </body>
 </html>
