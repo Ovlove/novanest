@@ -1,8 +1,8 @@
 ---
+import Logo from '@/components/Logo'
+import SocialIcons from '@/components/SocialIcons'
+import NavItems from '@/components/NavItems'
 import { site } from '@/config'
-import { Logo } from '@/components/Logo'
-import { SocialIcons } from '@/components/SocialIcons'
-import { NavItems } from '@/components/NavItems'
 ---
 
 <header class="relative z-50 flex flex-col">
@@ -60,6 +60,8 @@ import { NavItems } from '@/components/NavItems'
       const overlay = document.getElementById("mobile-nav-overlay");
 
       function toggleMenu() {
+        if (!mobileButtonEl || !menuPanel || !overlay) return;
+
         menuOpen = !menuOpen;
         document.body.classList.toggle("mobile-menu-open", menuOpen);
         mobileButtonEl.setAttribute("aria-expanded", menuOpen.toString());
@@ -68,6 +70,8 @@ import { NavItems } from '@/components/NavItems'
       }
 
       function closeMenu() {
+        if (!mobileButtonEl || !menuPanel || !overlay) return;
+
         menuOpen = false;
         mobileButtonEl.setAttribute("aria-expanded", "false");
         menuPanel.classList.add("translate-x-full");
@@ -75,15 +79,15 @@ import { NavItems } from '@/components/NavItems'
         document.body.classList.remove("mobile-menu-open");
       }
 
-      function handleEscape(e) {
+      function handleEscape(e: KeyboardEvent) {
         if (e.key === "Escape" && menuOpen) {
           closeMenu();
         }
       }
 
-      mobileButtonEl?.addEventListener("click", toggleMenu);
+      if (mobileButtonEl) mobileButtonEl.addEventListener("click", toggleMenu);
       document.addEventListener("keydown", handleEscape);
-      overlay?.addEventListener("click", closeMenu);
+      if (overlay) overlay.addEventListener("click", closeMenu);
     })();
   </script>
 </header>
