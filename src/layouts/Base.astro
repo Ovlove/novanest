@@ -2,7 +2,7 @@
 import BaseHead from "@/components/BaseHead";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { siteConfig } from "../consts.ts";
+import { site } from "@/config"; // Using your existing config
 import { getLangFromUrl } from "@/utils";
 import ui from "@/i18n/ui";
 
@@ -13,16 +13,17 @@ interface Props {
 }
 
 const lang = getLangFromUrl(Astro.url);
+const fallbackLang = ui[lang] ? lang : "en"; // Safe fallback if lang key doesn't exist
 
 const {
-  title = siteConfig.title,
-  description = ui[lang]["site.description"].text,
+  title = site.title,
+  description = ui[fallbackLang]?.["site.description"]?.text ?? "Welcome to NovaNest",
   image,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={lang || Astro.currentLocale} class="dark scroll-smooth">
+<html lang={fallbackLang} class="dark scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,16 +35,15 @@ const {
     <meta property="og:type" content="website" />
     <meta property="og:image" content={image || "/og-default.png"} />
     <meta property="og:url" content={Astro.url.href} />
-    
+
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image || "/og-default.png"} />
 
-    <!-- Optional: Favicon -->
     <link rel="icon" href="/favicon.ico" />
 
-    <!-- Injects your existing head component -->
+    <!-- Custom head -->
     <BaseHead title={title} description={description} image={image} />
   </head>
   <body class="relative">
@@ -68,10 +68,12 @@ const {
       ↑
     </button>
 
-    <script>
+    <script defer>
       const btn = document.getElementById('backToTop');
       window.addEventListener('scroll', () => {
-        btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+        if (btn) {
+          btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+        }
       });
     </script>
 
