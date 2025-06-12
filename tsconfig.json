@@ -4,25 +4,17 @@
     "baseUrl": ".",
     "strictNullChecks": true,
     "paths": {
-      "@/utils": [
-        "src/utils/index.ts"
-      ],
-      "@/components/*": [
-        "src/components/*.astro"
-      ],
-      "@/layouts/*": [
-        "src/layouts/*.astro"
-      ],
-      "@/i18n/*": [
-        "src/i18n/*.ts"
-      ],
-      "@/styles/*": [
-        "src/styles/*.css"
-      ],
+      "@/utils": ["src/utils/index.ts"],
+      "@/config": ["src/config.ts"],
+      "@/components": ["src/components/index.ts"],
+      "@/components/*": ["src/components/*"],
+      "@/layouts": ["src/layouts/index.ts"],
+      "@/layouts/*": ["src/layouts/*"],
+      "@/i18n": ["src/i18n/index.ts"],
+      "@/i18n/*": ["src/i18n/*"],
+      "@/styles": ["src/styles/index.css"],
+      "@/styles/*": ["src/styles/*"]
     }
   },
-  "include": [
-    "src",
-    "*.ts"
-  ]
+  "include": ["src", "*.ts"]
 }
