@@ -1,0 +1,14 @@
+---
+const icons = [
+  { name: "Twitter", href: "https://twitter.com", icon: "🐦" },
+  { name: "GitHub", href: "https://github.com", icon: "🐱" },
+];
+---
+
+<div class="flex gap-4">
+  {icons.map((item) => (
+    <a href={item.href} aria-label={item.name} target="_blank" rel="noopener noreferrer">
+      <span class="text-xl">{item.icon}</span>
+    </a>
+  ))}
+</div>
