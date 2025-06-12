@@ -1,0 +1,16 @@
+---
+const navItems = [
+  { name: "Home", href: "/" },
+  { name: "Blog", href: "/blog" },
+  { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
+];
+---
+
+<ul class="flex flex-col gap-4 md:flex-row md:items-center">
+  {navItems.map((item) => (
+    <li>
+      <a href={item.href} class="text-lg hover:underline">{item.name}</a>
+    </li>
+  ))}
+</ul>
