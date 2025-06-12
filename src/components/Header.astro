@@ -52,45 +52,38 @@ import { NavItems } from '@/components/NavItems'
     </div>
   </div>
 
-  <script type="module">
-    class MobileNavBtn {
-      menuOpen = false;
-      mobileButtonEl: HTMLElement;
-      menuPanel: HTMLElement;
-      overlay: HTMLElement;
+  <script>
+    (() => {
+      let menuOpen = false;
+      const mobileButtonEl = document.getElementById("mobile-nav-button");
+      const menuPanel = document.getElementById("mobile-nav-panel");
+      const overlay = document.getElementById("mobile-nav-overlay");
 
-      constructor() {
-        this.mobileButtonEl = document.getElementById("mobile-nav-button")!;
-        this.menuPanel = document.getElementById("mobile-nav-panel")!;
-        this.overlay = document.getElementById("mobile-nav-overlay")!;
-        this.mobileButtonEl.addEventListener("click", this.toggleMenu.bind(this));
-        document.addEventListener("keydown", this.handleEscape.bind(this));
-        this.overlay.addEventListener("click", this.closeMenu.bind(this));
+      function toggleMenu() {
+        menuOpen = !menuOpen;
+        document.body.classList.toggle("mobile-menu-open", menuOpen);
+        mobileButtonEl.setAttribute("aria-expanded", menuOpen.toString());
+        menuPanel.classList.toggle("translate-x-full", !menuOpen);
+        overlay.classList.toggle("hidden", !menuOpen);
       }
 
-      toggleMenu() {
-        this.menuOpen = !this.menuOpen;
-        document.body.classList.toggle("mobile-menu-open", this.menuOpen);
-        this.mobileButtonEl.setAttribute("aria-expanded", this.menuOpen.toString());
-        this.menuPanel.classList.toggle("translate-x-full", !this.menuOpen);
-        this.overlay.classList.toggle("hidden", !this.menuOpen);
-      }
-
-      closeMenu() {
-        this.menuOpen = false;
-        this.mobileButtonEl.setAttribute("aria-expanded", "false");
-        this.menuPanel.classList.add("translate-x-full");
-        this.overlay.classList.add("hidden");
+      function closeMenu() {
+        menuOpen = false;
+        mobileButtonEl.setAttribute("aria-expanded", "false");
+        menuPanel.classList.add("translate-x-full");
+        overlay.classList.add("hidden");
         document.body.classList.remove("mobile-menu-open");
       }
 
-      handleEscape(e: KeyboardEvent) {
-        if (e.key === "Escape" && this.menuOpen) {
-          this.closeMenu();
+      function handleEscape(e) {
+        if (e.key === "Escape" && menuOpen) {
+          closeMenu();
         }
       }
-    }
 
-    new MobileNavBtn();
+      mobileButtonEl?.addEventListener("click", toggleMenu);
+      document.addEventListener("keydown", handleEscape);
+      overlay?.addEventListener("click", closeMenu);
+    })();
   </script>
 </header>
